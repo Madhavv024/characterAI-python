@@ -5,7 +5,10 @@ from langchain import PromptTemplate, LLMChain
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+from remove_prefix_middleware import RemovePrefixMiddleware
+
 app = Flask(__name__)
+app.wsgi_app = RemovePrefixMiddleware(app.wsgi_app)
 CORS(app)
 
 
@@ -119,10 +122,10 @@ def bot():
     return jsonify(response.strip())
 
 
-@app.route('/healthz', methods=['GET'])
-def healthz():
+@app.route('/health', methods=['GET'])
+def health():
     return "OK"
 
 
 if __name__ == '__main__':
-    app.run(threaded=True, host='0.0.0.0', port=3000)
+    app.run(threaded=True, host='0.0.0.0', port=80)
