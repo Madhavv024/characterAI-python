@@ -66,12 +66,6 @@ def get_context_str_for_character(character):
         return prompt_file.THANOS_PROMT
 
 
-# template = prompt_file.DEFAULT_TEXT_QA_PROMPT_TMPL.format + """
-# {chat_history}
-# Human: {human_input}
-# Vishnu:"""
-
-
 CharacterUSer = ""
 templateUser = ""
 llmUser = ""
@@ -131,4 +125,4 @@ def healthz():
 
 
 if __name__ == '__main__':
-    app.run(threaded=True, host='0.0.0.0', port=80)
+    app.run(threaded=True, host='0.0.0.0', port=3000)
