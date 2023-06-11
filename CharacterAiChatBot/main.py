@@ -1,10 +1,13 @@
-from flask import Flask, request ,jsonify
+import apiKey
 import openai
-import prompt_file
-import os , apiKey
+from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+import prompt_file
+
 app = Flask(__name__)
 CORS(app)
+
 
 def get_context_str_for_character(character):
     if character == "Lord Vishnu":
@@ -13,7 +16,7 @@ def get_context_str_for_character(character):
         return prompt_file.SHIVA_PROMPT
     elif character == "Lord Buddha":
         return prompt_file.BUDDHA_PROMT
-    elif character=="Ironman":
+    elif character == "Ironman":
         return prompt_file.IRONMAN_PROMT
     elif character == "Lord Brahma":
         return prompt_file.BRHAMA_PROMT
@@ -61,44 +64,42 @@ def get_context_str_for_character(character):
         return prompt_file.CAPTAIN_AMERICA_PROMT
     elif character == "Thanos":
         return prompt_file.THANOS_PROMT
-    
+
 
 CharacterUSer = ""
+
 
 @app.route('/character', methods=['POST'])
 def characterSet():
     print(request.form)
     data = request.json
     characterType = data['character']
-    # templateSet = prompt_file.DEFAULT_TEXT_QA_PROMPT_TMPL.format(context_str=get_context_str_for_character(character=characterType), human_input = "")
     global CharacterUSer
     CharacterUSer = characterType
     print("Character template-------------------------\n" + CharacterUSer)
     return CharacterUSer
-    
 
-    
+
 @app.route('/chat', methods=['POST'])
 def bot():
     print(request.form)
     data = request.json
     charcter = CharacterUSer
     chat = data["chat"]
-    prompt = prompt_file.DEFAULT_TEXT_QA_PROMPT_TMPL.format(context_str=get_context_str_for_character(character=charcter), human_input = chat)
+    prompt = prompt_file.DEFAULT_TEXT_QA_PROMPT_TMPL.format(
+        context_str=get_context_str_for_character(character=charcter), human_input=chat)
     # print(prompt)
     openai.api_key = apiKey.OPENAI_AUTH_TOKEN
     response = openai.Completion.create(
-            engine = 'text-davinci-003', 
-            prompt = prompt,
-            max_tokens = 400,
-            temperature = 0.5)
+        engine='text-davinci-003',
+        prompt=prompt,
+        max_tokens=400,
+        temperature=0.5)
     respons_in_english = response["choices"][0]["text"]
-    
 
     print(respons_in_english)
     return jsonify(respons_in_english.strip())
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.6', port=4000)
-
+    app.run(threaded=True, host='0.0.0.0', port=80)
