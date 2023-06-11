@@ -1,10 +1,10 @@
 from langchain import OpenAI
-# from langchain.chains import ConversationChain
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
-import apiKey , prompt_file , os
-from langchain import PromptTemplate , LLMChain
-from flask import Flask, request ,jsonify
+import prompt_file, os
+from langchain import PromptTemplate, LLMChain
+from flask import Flask, request, jsonify
 from flask_cors import CORS
+
 app = Flask(__name__)
 CORS(app)
 
@@ -16,7 +16,7 @@ def get_context_str_for_character(character):
         return prompt_file.SHIVA_PROMPT
     elif character == "Lord Buddha":
         return prompt_file.BUDDHA_PROMT
-    elif character=="Ironman":
+    elif character == "Ironman":
         return prompt_file.IRONMAN_PROMT
     elif character == "Lord Brahma":
         return prompt_file.BRHAMA_PROMT
@@ -65,6 +65,7 @@ def get_context_str_for_character(character):
     elif character == "Thanos":
         return prompt_file.THANOS_PROMT
 
+
 # template = prompt_file.DEFAULT_TEXT_QA_PROMPT_TMPL.format + """
 # {chat_history}
 # Human: {human_input}
@@ -76,14 +77,16 @@ templateUser = ""
 llmUser = ""
 promptUser = ""
 memoryUser = ""
-conversationWithSummary= ""
+conversationWithSummary = ""
+
 
 @app.route('/character', methods=['POST'])
 def characterSet():
     print(request.form)
     data = request.json
     characterType = data['character']
-    templateSet = prompt_file.DEFAULT_TEXT_QA_PROMPT_TMPL.format(context_str=get_context_str_for_character(character=characterType), human_input = "")
+    templateSet = prompt_file.DEFAULT_TEXT_QA_PROMPT_TMPL.format(
+        context_str=get_context_str_for_character(character=characterType), human_input="")
     global CharacterUSer
     global templateUser
     global promptUser
@@ -98,21 +101,18 @@ def characterSet():
         template=templateUser
     )
     global llmUser
-    os.environ["OPENAI_API_KEY"] = apiKey.OPENAI_AUTH_TOKEN
-
     llmUser = OpenAI(temperature=0.5)
 
-    memoryUser = ConversationBufferWindowMemory(ai_prefix=characterType, memory_key="chat_history" , k=3)
+    memoryUser = ConversationBufferWindowMemory(ai_prefix=characterType, memory_key="chat_history", k=3)
     global conversationWithSummary
     conversationWithSummary = LLMChain(
-        llm=llmUser, 
+        llm=llmUser,
         # We set a low k=3, to only keep the last 3 interactions in memory
         prompt=promptUser,
-        memory = memoryUser, 
+        memory=memoryUser,
         verbose=True,
     )
     return CharacterUSer
-    
 
 
 @app.route('/chat', methods=['POST'])
@@ -120,21 +120,15 @@ def bot():
     print(request.form)
     data = request.json
     chat = data["chat"]
-    # template = prompt_file.DEFAULT_TEXT_QA_PROMPT_TMPL.format(context_str=get_context_str_for_character(character=charcter), human_input = chat)
-    # print(prompt) 
-    response = conversationWithSummary.predict(human_input = chat)
-    # response = openai.Completion.create(
-    #         engine = 'text-davinci-003', 
-    #         prompt = prompt,
-    #         max_tokens = 400,
-    #         temperature = 0.5)
-    # respons_in_english = response["choices"][0]["text"]
+    response = conversationWithSummary.predict(human_input=chat)
     print(response)
     return jsonify(response.strip())
 
 
+@app.route('/healthz', methods=['GET'])
+def healthz():
+    return "OK"
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.4', port=4000)
-
+    app.run(threaded=True, host='0.0.0.0', port=80)
