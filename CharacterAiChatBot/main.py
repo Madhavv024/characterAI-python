@@ -10,60 +10,38 @@ CORS(app)
 
 
 def get_context_str_for_character(character):
-    if character == "Lord Vishnu":
-        return prompt_file.VISHNU_PROMT
-    elif character == "Lord Shiva":
-        return prompt_file.SHIVA_PROMPT
-    elif character == "Lord Buddha":
-        return prompt_file.BUDDHA_PROMT
-    elif character == "Ironman":
-        return prompt_file.IRONMAN_PROMT
-    elif character == "Lord Brahma":
-        return prompt_file.BRHAMA_PROMT
-    elif character == "Lord Rama":
-        return prompt_file.RAMA_PROMT
-    elif character == "Lord Krishna":
-        return prompt_file.KRISHNA_PROMT
-    elif character == "spiderman":
-        return prompt_file.SPIDERMAN_PROMT
-    elif character == "Lord Hanuman":
-        return prompt_file.HANUMAN_PROMT
-    elif character == "Lord Ganesha":
-        return prompt_file.GANESHA_PROMT
-    elif character == "Goddess Durga":
-        return prompt_file.DURGA_PROMT
-    elif character == "Goddess Kali":
-        return prompt_file.KALI_PROMT
-    elif character == "Lord Arjuna":
-        return prompt_file.ARJUNA_PROMT
-    elif character == "Goddess Draupadi":
-        return prompt_file.DRAUPADI_PROMT
-    elif character == "Lord Bhima":
-        return prompt_file.BHIMA_PROMT
-    elif character == "Lord Yudhishthira":
-        return prompt_file.YUDHISTHIR_PROMT
-    elif character == "Lord Nakula":
-        return prompt_file.NAKULA_PROMT
-    elif character == "Lord Sahadev":
-        return prompt_file.SHAHADEV_PROMT
-    elif character == "Lord Indra":
-        return prompt_file.INDRA_PROMPT
-    elif character == "Lord Agni":
-        return prompt_file.AGNI_PROMPT
-    elif character == "Lord Surya":
-        return prompt_file.SURYA_PROMPT
-    elif character == "Lord Chandra":
-        return prompt_file.CHANDRA_PROMT
-    elif character == "Lord Vayu":
-        return prompt_file.VAYU_PROMPT
-    elif character == "Lord Varuna":
-        return prompt_file.VARUNA_PROMT
-    elif character == "thor":
-        return prompt_file.THANOS_PROMT
-    elif character == "Captain America":
-        return prompt_file.CAPTAIN_AMERICA_PROMT
-    elif character == "Thanos":
-        return prompt_file.THANOS_PROMT
+    prompt_mapping = {
+        "Lord Vishnu": prompt_file.VISHNU_PROMPT,
+        "Lord Shiva": prompt_file.SHIVA_PROMPT,
+        "Lord Buddha": prompt_file.BUDDHA_PROMPT,
+        "Ironman": prompt_file.IRONMAN_PROMPT,
+        "Lord Brahma": prompt_file.BRAHMA_PROMPT,
+        "Lord Rama": prompt_file.RAMA_PROMPT,
+        "Lord Krishna": prompt_file.KRISHNA_PROMPT,
+        "spiderman": prompt_file.SPIDERMAN_PROMPT,
+        "Lord Hanuman": prompt_file.HANUMAN_PROMPT,
+        "Lord Ganesha": prompt_file.GANESHA_PROMPT,
+        "Goddess Durga": prompt_file.DURGA_PROMPT,
+        "Goddess Kali": prompt_file.KALI_PROMPT,
+        "Lord Arjuna": prompt_file.ARJUNA_PROMPT,
+        "Goddess Draupadi": prompt_file.DRAUPADI_PROMPT,
+        "Lord Bhima": prompt_file.BHIMA_PROMPT,
+        "Lord Yudhishthira": prompt_file.YUDHISTHIR_PROMPT,
+        "Lord Nakula": prompt_file.NAKULA_PROMPT,
+        "Lord Sahadev": prompt_file.SHAHADEV_PROMPT,
+        "Lord Indra": prompt_file.INDRA_PROMPT,
+        "Lord Agni": prompt_file.AGNI_PROMPT,
+        "Lord Surya": prompt_file.SURYA_PROMPT,
+        "Lord Chandra": prompt_file.CHANDRA_PROMPT,
+        "Lord Vayu": prompt_file.VAYU_PROMPT,
+        "Lord Varuna": prompt_file.VARUNA_PROMPT,
+        "thor": prompt_file.THOR_PROMPT,
+        "Captain America": prompt_file.CAPTAIN_AMERICA_PROMPT,
+        "Thanos": prompt_file.THANOS_PROMPT
+    }
+
+    return prompt_mapping.get(character, None)
+
 
 
 CharacterUSer = ""
