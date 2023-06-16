@@ -53,6 +53,7 @@ promptUser = ""
 memoryUser = ""
 conversationWithSummary = ""
 
+analytics = Analytics(tracking_id='G-CS9G5XC3LB')
 
 @app.route('/character', methods=['POST'])
 def characterSet():
