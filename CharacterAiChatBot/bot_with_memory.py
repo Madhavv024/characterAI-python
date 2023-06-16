@@ -3,6 +3,7 @@ from flask_cors import CORS
 from langchain import OpenAI
 from langchain import PromptTemplate, LLMChain
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
+from googleanalytics import Analytics
 
 import prompt_file
 from remove_prefix_middleware import RemovePrefixMiddleware
@@ -96,6 +97,7 @@ def bot():
     chat = data["chat"]
     response = conversationWithSummary.predict(human_input=chat)
     print(response)
+    analytics.event('Chatbot Interaction', CharacterUSer, chat)
     return jsonify(response.strip())
 
 

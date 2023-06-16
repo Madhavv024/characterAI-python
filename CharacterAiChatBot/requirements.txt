@@ -2,3 +2,4 @@ langchain
 flask
 flask-cors
 openai==0.27.8
+google-analytics-python
